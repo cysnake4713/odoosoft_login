@@ -1,0 +1,107 @@
+@media (max-width: 768px) {
+    .openerp.openerp_webclient_container {
+        height: 100% !important;
+    }
+}
+
+.oe_view_title {
+    padding: 10px 5px 5px 5px;
+
+}
+
+#oe_main_menu_navbar {
+    /*margin-bottom: 0 !important;*/
+}
+
+.oe_view_manager_switch {
+    float: left;
+}
+
+.oe_searchview {
+    float: none !important;
+    min-width: inherit !important;
+}
+
+.oe_view_manager_view_search {
+    padding: 0 2px 5px 2px;
+}
+
+.oe_view_manager_buttons {
+    padding: 0 2px 2px 2px;
+}
+
+.dropdown-header {
+    border-bottom: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
+    padding: 3px !important;
+    color: #000000;
+}
+
+.oe_view_title_text_container {
+    display: inline-block;
+    width: 60%;
+    word-break: break-all;
+}
+
+ul.oe_form_status {
+    width: 100%;
+    display: block !important;
+    margin-top: 3px !important;
+}
+
+div.oe_form_sheetbg {
+    background: none !important;
+    padding: 0 !important;
+}
+
+.openerp .oe_form_sheet_width {
+    min-width: 0;
+}
+
+.openerp .oe_form td.oe_form_group_cell_label label {
+    min-width: 0;
+}
+
+.openerp .oe_form div.oe_chatter {
+    min-width: 0;
+}
+
+.openerp .oe_record_thread {
+    margin: 0 !important;
+}
+
+.openerp .oe_followers {
+    display: none !important;
+}
+
+.openerp .oe_form .oe_form_group {
+    width: auto;
+}
+
+.openerp .oe_mobile_waiting_hint {
+    padding-top: 50%;
+    text-align: center;
+}
+
+/*.openerp .oe_button {*/
+    /*font-size: 15px !important;*/
+/*}*/
+
+.openerp .oe_view_manager_buttons {
+    margin-bottom: 8px;
+}
+
+.openerp .oe_form_editable .oe_form .oe_form_field_datetime input {
+    width: auto !important;
+}
+
+.openerp .oe_form_sheet {
+  padding: 5px !important;
+}
+
+.oe_form_field_text.oe_inline > textarea {
+    width: 300px;
+}
+/*.oe_view_manager_sidebar {*/
+/*padding-left: 110px;*/
+/*}*/

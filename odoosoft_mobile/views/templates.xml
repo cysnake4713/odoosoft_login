@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- vim:fdn=3:
+-->
+<openerp>
+    <data>
+        <template id="odoosoft_mobile.sidebar" name="Mobile Sidebar">
+        </template>
+
+        <template id="odoosoft_mobile.assets_backend">
+            <link rel="stylesheet" href="/odoosoft_mobile/static/src/css/style.css"/>
+            <script type="text/javascript" src="/odoosoft_mobile/static/src/js/mobile.js"/>
+        </template>
+
+        <template id="odoosoft_mobile.client" name="Mobile Abstract">
+            <t t-call="web.layout">
+                <t t-set="head">
+                    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+                    <t t-call-assets="web.assets_common"/>
+                    <t t-call-assets="web.assets_backend"/>
+                    <t t-call-assets="odoosoft_mobile.assets_backend"/>
+                    <script type="text/javascript">
+                        $(function() {
+                        var s = new openerp.init();
+                        <t t-if="init">
+                            <t t-raw="init"/>
+                        </t>
+                        <t t-if="not init">
+                            var wc = new s.web.WebClient();
+                            wc.setElement($(document.body));
+                            wc.start();
+                        </t>
+                        });
+                    </script>
+                </t>
+
+                <!--<nav id="oe_main_menu_navbar" class="navbar navbar-default" role="navigation" groups="base.group_user,base.group_portal">-->
+                    <!--<div class="navbar-header">-->
+                        <!--<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">-->
+                            <!--<span class="icon-bar"></span>-->
+                            <!--<span class="icon-bar"></span>-->
+                            <!--<span class="icon-bar"></span>-->
+                        <!--</button>-->
+                    <!--</div>-->
+                    <!--<div class="navbar-collapse collapse" id="oe_main_menu_placeholder">-->
+                        <!--<t t-call="odoosoft_mobile.menu"/>-->
+                    <!--</div>-->
+                <!--</nav>-->
+                <div class="openerp openerp_webclient_container">
+                    <table class="oe_webclient">
+                        <tr>
+                            <td class="oe_application">
+                                <div class="oe_mobile_waiting_hint">
+                                    <img src="/odoosoft_mobile/static/src/img/loading.gif"/>
+                                    <p>载入中,请稍后</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </t>
+        </template>
+
+        <template id="odoosoft_mobile.login_layout" name="Login Layout">
+            <t t-call="web.layout">
+                <t t-set="head">
+                    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+                    <link media="all" href="http://i.gtimg.cn/vipstyle/frozenui/1.2.1/css/frozen.css?_bid=306" rel="stylesheet"/>
+                </t>
+                <t t-set="body_classname" t-value="'oe_single_form'"/>
+                <div class="oe_single_form_container modal-content">
+                    <div class="ui-center">
+                        <img t-attf-src="/web/binary/company_logo{{ '?dbname='+db if db else '' }}"/>
+                    </div>
+                    <hr/>
+                    <div class="ui-center ui-form ui-border-t">
+                        <t t-raw="0"/>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="odoosoft_mobile.login" name="Login">
+            <t t-call="odoosoft_mobile.login_layout">
+                <form class="oe_login_form" role="form" t-attf-action="/mobile/login{{ '?debug' if debug else '' }}" method="post"
+                      onsubmit="this.action = this.action + location.hash">
+                    <div class="form-group field-login ui-form-item ui-border-b">
+                        <label for="login" class="control-label">登录名</label>
+                        <input type="text" name="login" t-att-value="login" id="login" class="form-control" required="required"
+                               autofocus="autofocus"/>
+                    </div>
+
+                    <div class="form-group field-password ui-form-item ui-border-b">
+                        <label for="password" class="control-label">密码</label>
+                        <input type="password" name="password" id="password" class="form-control" required="required"
+                               t-att-autofocus="'autofocus' if login else None"/>
+                    </div>
+
+                    <p class="alert alert-danger ui-tooltips ui-tooltips-warn" t-if="error">
+                        <div class="ui-tooltips-cnt ui-tooltips-cnt-link ui-border-b">
+                            <i></i>
+                            <t t-esc="error"/>
+                        </div>
+                    </p>
+
+
+                    <p class="alert alert-success ui-tips ui-tips-info" t-if="message">
+                        <i></i>
+                        <t t-esc="message"/>
+                    </p>
+
+                    <input type="hidden" name="redirect" t-att-value="redirect"/>
+                    <div class="clearfix oe_login_buttons ui-btn-wrap">
+                        <button type="submit" class="btn btn-primary ui-btn-lg ui-btn-primary">登陆</button>
+                    </div>
+                </form>
+            </t>
+        </template>
+
+
+        <template id="odoosoft_mobile.menu">
+            <ul class="nav navbar-nav navbar-left oe_application_menu_placeholder pre-scrollable">
+                <li class="dropdown hidden-sm hidden-md" t-foreach="menu_data['children']" t-as="menu">
+                    <t t-call="odoosoft_mobile.menu_link"/>
+                    <ul class="dropdown-menu">
+                        <t t-foreach="menu['children']" t-as="menu">
+                            <t t-call="odoosoft_mobile.menu_secondary_submenu"/>
+                        </t>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right oe_user_menu_placeholder" style="display: none;"/>
+            <ul class="nav navbar-nav navbar-right oe_systray" style="display: none;"/>
+        </template>
+
+        <template id="odoosoft_mobile.menu_link">
+            <t t-set="debug_param" t-value="'?&amp;debug=' if debug else ''"/>
+            <a t-att-href="'/mobile%s#menu_id=%s&amp;action=%s' % (debug_param or '', menu['id'], menu['action'] and menu['action'].split(',')[1] or '') if menu['action'] else '#'"
+               t-att-class="'oe_menu_toggler dropdown-toggle' if menu.get('children') else 'oe_menu_leaf'"
+               t-att-data-menu="menu['id']"
+               t-att-data-action-model="menu['action'] and menu['action'].split(',')[0] or ''"
+               t-att-data-action-id="menu['action'] and menu['action'].split(',')[1] or ''"
+               t-att-data-toggle="'dropdown' if menu.get('children') else ''">
+                <span class="oe_menu_text">
+                    <t t-esc="menu['name']"/>
+                </span>
+            </a>
+        </template>
+
+        <template id="odoosoft_mobile.menu_secondary_submenu">
+            <li t-att-class="'dropdown-header' if not menu['action'] else ''">
+                <t t-if="menu['action']">
+                    <a t-att-href="'/mobile%s#menu_id=%s&amp;action=%s' % (debug_param or '', menu['id'], menu['action'] and menu['action'].split(',')[1] or '') if menu['action'] else '#'"
+                       t-att-class="'oe_menu_toggler' if menu.get('children') else 'oe_menu_leaf'"
+                       t-att-data-menu="menu['id']"
+                       t-att-data-action-model="menu['action'] and menu['action'].split(',')[0] or ''"
+                       t-att-data-action-id="menu['action'] and menu['action'].split(',')[1] or ''">
+                        <span class="oe_menu_text">
+                            <t t-esc="menu['name']"/>
+                        </span>
+                    </a>
+                </t>
+                <t t-if="menu['action']==False">
+                    <t t-esc="menu['name']"/>
+                </t>
+            </li>
+            <t t-foreach="menu['children']" t-as="menu">
+                <t t-call="odoosoft_mobile.menu_secondary_submenu"/>
+            </t>
+        </template>
+    </data>
+</openerp>

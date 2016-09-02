@@ -1,0 +1,37 @@
+<template>
+    <t t-name="MobileViewManagerAction">
+        <div class="oe_view_manager">
+            <div class="oe_view_manager_header">
+                <div class="oe_view_title" t-if="widget.flags.display_title !== false">
+                    <div class="oe_view_title_text_container">
+                        <span class="oe_view_title_text oe_breadcrumb_title"/>
+                    </div>
+                    <ul class="oe_view_manager_switch oe_button_group oe_right">
+                        <t t-if="widget.views_src.length > 1" t-foreach="widget.views_src" t-as="view">
+                            <li class="oe_e" style="display:inline-block;">
+                                <a t-attf-class="oe_vm_switch_#{view.view_type}" t-att-data-view-type="view.view_type"
+                                   t-att-title="view.button_label"/>
+                            </li>
+                        </t>
+                    </ul>
+                </div>
+                <div class="oe_view_manager_view_search"/>
+                <div class="oe_view_manager_buttons">
+                    <div class="oe_view_manager_pager oe_right"/>
+                    <div class="oe_view_manager_sidebar oe_right"/>
+                </div>
+            </div>
+
+            <div class="oe_view_manager_wrapper">
+                <div>
+                    <div class="oe_view_manager_body">
+                        <div class="oe_searchview_drawer_container"/>
+                        <t t-foreach="widget.views_src" t-as="view">
+                            <div t-attf-class="oe_view_manager_view_#{view.view_type}"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</template>
